@@ -1,0 +1,19 @@
+# Local archive of unused/original source files (kept locally, not for deploy)
+_archive-source/
+
+# Raw source clips (the site only uses 05-assembly/clips/)
+04-clips/
+
+# Netlify CLI link + cache (moved to Vercel)
+**/.netlify/
+
+# Vercel
+.vercel/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+
+# Node
+node_modules/

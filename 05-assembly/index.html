@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cura · A slow-fashion pop-up · SDS0902</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Hanken+Grotesk:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:#f4f1ea; --ink:#1f1b16; --muted:#8a8178; --hair:#e3ddd1;
+    --accent:#a9603e; --earth:#b9764f; --sage:#7c8268; --slate:#6d8591;
+    --dark:#15110d; --dark2:#1c1712; --dt:#efe7d8; --dmute:#bcb09c; --ember:#cf8a5c;
+    --serif:"Fraunces",Georgia,serif; --body:"Hanken Grotesk",system-ui,sans-serif; --mono:"Space Mono",monospace;
+    --max:1180px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+  body { background:var(--cream); color:var(--ink); font-family:var(--body); line-height:1.62; overflow-x:hidden; }
+  ::selection { background:var(--ember); color:var(--cream); }
+  em { font-style:italic; }
+  .wrap { max-width:var(--max); margin:0 auto; }
+  .mono { font-family:var(--mono); }
+
+  .progress { position:fixed; top:0; left:0; height:2px; width:0; background:var(--ember); z-index:300; transition:width .08s linear; }
+  .rhead { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; padding:16px clamp(18px,4vw,46px); font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); pointer-events:none; }
+  .rhead .mid { color:var(--accent); }
+
+  /* HERO */
+  .hero { position:relative; height:100vh; min-height:600px; overflow:hidden; display:flex; align-items:center; justify-content:center; text-align:center; }
+  .pbg { position:absolute; inset:-8% 0; background-size:cover; background-position:center; will-change:transform; z-index:0; }
+  .hero-grad { position:absolute; inset:0; z-index:1; background:transparent; }
+  .hero-in { position:relative; z-index:2; padding:0 6vw; }
+  .hero-eye { font-family:var(--mono); font-weight:700; font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:#5a2f1c; margin-bottom:2rem; text-shadow:0 1px 3px rgba(244,241,234,.9); }
+  .hero h1 { font-family:var(--serif); font-weight:300; font-size:clamp(5rem,18vw,14rem); line-height:.9; color:var(--ink); text-shadow:0 2px 30px rgba(244,241,234,.55); }
+  .hero-sub { font-family:var(--serif); font-style:italic; font-weight:500; font-size:clamp(1.3rem,3.2vw,2rem); color:var(--ink); margin:1.6rem auto 0; max-width:30ch; text-shadow:0 1px 3px rgba(244,241,234,.9); }
+  .scrollcue { position:absolute; bottom:30px; left:50%; transform:translateX(-50%); z-index:2; font-family:var(--mono); font-weight:700; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#f1e8da; text-shadow:0 1px 2px rgba(0,0,0,.55); animation:bob 2.4s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{ transform:translate(-50%,0);} 50%{ transform:translate(-50%,8px);} }
+
+  /* sections */
+  .pad { padding:clamp(70px,12vh,140px) clamp(22px,6vw,90px); }
+  .center { text-align:center; max-width:62ch; margin:0 auto; }
+  .klabel { font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin-bottom:1rem; }
+  .big { font-family:var(--serif); font-weight:330; font-size:clamp(1.7rem,4vw,3rem); line-height:1.3; color:var(--ink); }
+  .lead-dk { font-size:1.12rem; color:#3a342c; }
+  .shot { position:relative; height:100vh; min-height:560px; overflow:hidden; display:flex; }
+  .shot.bottom { align-items:flex-end; }
+  .shot.center { align-items:center; justify-content:center; }
+  .shot.q { min-height:80vh; }
+  .shot.fixedbg { background-size:cover; background-position:center; background-attachment:fixed; }
+  @media (hover:none){ .shot.fixedbg { background-attachment:scroll; } }
+  .qband { position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; padding:clamp(54px,11vh,118px) 6vw; }
+  .coverimg { position:absolute; inset:-8% 0; width:100%; height:116%; object-fit:cover; object-position:center; z-index:0; will-change:transform; }
+  .shot-grad { position:absolute; inset:0; z-index:1; }
+  .shot-in { position:relative; z-index:2; }
+  .shot-cap { padding:0 clamp(22px,7vw,120px) clamp(60px,10vh,120px); max-width:900px; }
+  .shot-cap h2 { font-family:var(--serif); font-weight:330; font-size:clamp(1.9rem,4.4vw,3.2rem); line-height:1.1; margin-bottom:1rem; color:var(--ink); }
+  .shot-cap p { font-size:1.1rem; color:#3a342c; max-width:54ch; }
+  .quote { position:relative; z-index:2; max-width:24ch; text-align:center; font-family:var(--serif); font-style:italic; font-weight:300; color:#f6efe2; font-size:clamp(1.9rem,5vw,3.4rem); line-height:1.28; padding:0 6vw; text-shadow:0 2px 16px rgba(0,0,0,.6), 0 1px 4px rgba(0,0,0,.5); }
+
+  /* influences */
+  .imgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:clamp(14px,2vw,24px); max-width:1200px; margin:0 auto; }
+  .icard { margin:0; position:relative; overflow:visible; border-radius:3px; }
+  .icard img { display:block; width:100%; height:clamp(320px,46vh,460px); object-fit:cover; cursor:zoom-in; }
+  .icard img { border-radius:3px; }
+  .icard figcaption { padding:.7rem .1rem 0; font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .meta3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.4rem 2.4rem; max-width:1000px; margin:clamp(36px,6vh,64px) auto 0; }
+  .meta3 > div { border-top:1px solid var(--hair); padding-top:1rem; }
+  .meta3 .mt { font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.4rem; }
+  .meta3 p { font-size:1rem; color:#3a342c; }
+
+  /* numbers */
+  .num-row { position:relative; z-index:2; display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1.6rem; max-width:1200px; margin:0 auto; text-align:center; }
+  .num .v { font-family:var(--serif); font-weight:500; font-size:clamp(3rem,8vw,6rem); line-height:.92; color:#8f4a28; text-shadow:0 1px 4px rgba(244,241,234,.92); }
+  .num .v .u { font-size:.32em; color:#5a5249; margin-left:.05em; }
+  .num .l { font-family:var(--mono); font-weight:700; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#4a443c; margin-top:.6rem; text-shadow:0 1px 3px rgba(244,241,234,.9); }
+
+  /* two zones */
+  .zgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:clamp(14px,2vw,24px); max-width:1200px; margin:0 auto; }
+  .zcard { position:relative; border-radius:3px; display:block; }
+  .zcard img { position:static; width:100%; height:clamp(300px,40vh,440px); object-fit:cover; cursor:zoom-in; border-radius:3px; display:block; }
+  .zcard .g { display:none; }
+  .zcard .tx { position:relative; padding:.9rem .2rem 0; pointer-events:none; }
+  .zcard .tx .z { font-family:var(--mono); font-size:10px; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.6rem; }
+  .zcard .tx p { font-size:1rem; color:#3a342c; max-width:44ch; }
+
+  /* SENSES (cream cards over botanical bg) */
+  .senses { position:relative; background:var(--cream); color:var(--ink); padding:clamp(70px,12vh,140px) clamp(22px,6vw,90px); overflow:hidden; }
+  .senses-bg { position:absolute; inset:0; z-index:0; background-image:url('images/hero-2.jpg'); background-size:cover; background-position:center; }
+  .senses-veil { position:absolute; inset:0; z-index:1; background:rgba(244,241,234,.6); }
+  .senses .inner { position:relative; z-index:2; max-width:var(--max); margin:0 auto; }
+  .senses h2 { font-family:var(--serif); font-weight:360; font-size:clamp(1.9rem,4.6vw,3.1rem); line-height:1.05; }
+  .senses .sub { font-size:1.06rem; color:#3a342c; margin:.8rem 0 1.8rem; max-width:60ch; }
+  .sgrid { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+  @media (max-width:600px){ .sgrid { grid-template-columns:1fr; } }
+  .sense { position:relative; overflow:hidden; border:1px solid var(--hair); border-radius:3px; padding:1.5rem 1.5rem 1.4rem; background:rgba(255,255,255,.72); transition:transform .35s ease, box-shadow .35s ease; }
+  .sense::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--c); }
+  .sense:hover { transform:translateY(-4px); box-shadow:0 18px 38px -20px rgba(31,27,22,.3); }
+  .sense .sn { font-family:var(--mono); font-size:10px; letter-spacing:.2em; color:var(--c); }
+  .sense h4 { font-family:var(--serif); font-weight:400; font-size:1.4rem; color:var(--c); margin:.5rem 0; }
+  .sense p { font-size:.98rem; color:#3a342c; }
+
+  /* PLAN (dark) */
+  .plan { background:transparent; }
+  .plan figure { margin:0; border-radius:3px; overflow:hidden; }
+
+  /* DOSSIER (cream) */
+  .dossier { background:var(--cream); color:var(--ink); padding:clamp(70px,12vh,140px) clamp(22px,6vw,90px); }
+  .dossier .inner { max-width:var(--max); margin:0 auto; }
+  .dblock { margin-bottom:clamp(44px,7vh,80px); }
+  .dlabel { font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:.7rem; }
+  .dossier h3 { font-family:var(--serif); font-weight:360; font-size:clamp(1.7rem,3.8vw,2.6rem); line-height:1.06; margin-bottom:.8rem; }
+  .dossier .lead { font-size:1.06rem; color:#3a342c; max-width:64ch; margin-bottom:1.4rem; }
+  .g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  @media (max-width:760px){ .g3 { grid-template-columns:1fr; } }
+  .g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:680px){ .g2 { grid-template-columns:1fr; } }
+  .subl { font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin:2rem 0 1rem; }
+  .dplate { margin:0; border:1px solid var(--hair); background:#fff; padding:10px; box-shadow:0 1px 2px rgba(31,27,22,.05); border-radius:3px; }
+  .dplate img { display:block; width:100%; height:auto; cursor:zoom-in; border-radius:2px; background:#efe9dd; }
+  .dplate video { display:block; width:100%; height:auto; cursor:zoom-in; border-radius:2px; background:#000; }
+  /* FF&E full-width table */
+  .ffe-wrap { width:94vw; position:relative; left:50%; margin-left:-47vw; margin-top:1.2rem; margin-bottom:.4rem; overflow-x:auto; border:1px solid var(--hair); border-radius:3px; box-shadow:0 1px 2px rgba(31,27,22,.05); }
+  @media (max-width:760px){ .ffe-wrap { width:100%; left:0; margin-left:0; } }
+  .ffe { width:100%; min-width:1040px; border-collapse:collapse; font-size:.86rem; background:#fff; }
+  .ffe thead th { background:var(--ink); color:#f4f1ea; font-family:var(--mono); font-weight:700; font-size:9px; letter-spacing:.1em; text-transform:uppercase; text-align:left; padding:.7rem .7rem; }
+  .ffe td { border-top:1px solid var(--hair); padding:.7rem .7rem; vertical-align:top; color:#3a342c; line-height:1.5; }
+  .ffe tr.grp td { background:#efe9dd; font-family:var(--mono); font-weight:700; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink); }
+  .ffe tr.feat td { background:#f6efe4; }
+  .ffe .c-code b { font-family:var(--mono); font-size:10.5px; color:var(--accent); white-space:nowrap; }
+  .ffe .c-cost { white-space:nowrap; }
+  .ffe .c-photo img { width:62px; height:62px; object-fit:cover; border-radius:3px; border:1px solid var(--hair); cursor:zoom-in; display:block; }
+  .ffe a { color:#9a5a37; text-decoration:underline; text-underline-offset:2px; }
+  .ffe th:nth-child(1),.ffe td:nth-child(1){ width:96px; }
+  .ffe th:nth-child(5){ width:92px; }
+  .ffe th:nth-child(6){ width:80px; }
+  .ffe th:nth-child(7){ width:32%; }
+  .dcap { margin-top:8px; font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .sbkey { margin-top:14px; border:1px solid var(--hair); border-radius:3px; background:#fff; }
+  .sbkey > summary { list-style:none; cursor:pointer; font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent); padding:.85rem 1.1rem; display:flex; align-items:center; gap:.6rem; user-select:none; }
+  .sbkey > summary::-webkit-details-marker { display:none; }
+  .sbkey > summary::before { content:'+'; font-size:15px; line-height:1; color:var(--accent); }
+  .sbkey[open] > summary::before { content:'\2212'; }
+  .sbkey > summary:hover { color:var(--ink); }
+  .sbkey .sbkey-body { padding:0 1.1rem 1.1rem; }
+  .placeholder { border:1.5px dashed #c08a63; border-radius:3px; background:rgba(169,96,62,.04); padding:1.2rem 1.3rem; }
+  .placeholder .pt { font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:.5rem; }
+  .placeholder h4 { font-family:var(--serif); font-weight:420; font-size:1.1rem; margin-bottom:.3rem; }
+  .placeholder p { font-size:.92rem; color:#5a5249; }
+  .placeholder ul { margin:.3rem 0 0 1.1rem; font-size:.93rem; color:#3a342c; line-height:1.7; }
+  .tscroll { overflow-x:auto; border:1px solid var(--hair); background:#fff; border-radius:3px; }
+  table.sched { width:100%; border-collapse:collapse; font-size:.92rem; min-width:680px; }
+  table.sched th { text-align:left; font-family:var(--mono); font-weight:700; font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:.8rem 1rem; border-bottom:1px solid var(--hair); white-space:nowrap; }
+  table.sched td { padding:.72rem 1rem; border-bottom:1px solid var(--hair); vertical-align:top; }
+  table.sched .code { font-family:var(--mono); font-weight:700; color:var(--accent); white-space:nowrap; }
+  .pill { font-family:var(--mono); font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--earth); border:1px solid var(--earth); border-radius:999px; padding:.02rem .42rem; white-space:nowrap; }
+  .mat { border-top:1px solid var(--ink); padding:1.6rem 0; }
+  .mat .top { display:flex; align-items:baseline; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .mat .top .mn { font-family:var(--mono); font-size:11px; }
+  .mat .top h4 { font-family:var(--serif); font-weight:400; font-size:clamp(1.4rem,3vw,2rem); }
+  .mat .top .sup { font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .mat .body { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem 2rem; }
+  .mat .body .dt { font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.3rem; }
+  .mat .body p { font-size:.98rem; color:#3a342c; }
+  .mat .body p .src { display:inline-block; margin-top:.25rem; font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:#9a5a37; text-decoration:underline; text-underline-offset:2px; }
+  .mat .body p .src:hover { color:var(--ink); }
+  .life { list-style:none; max-width:66ch; }
+  .life li { display:flex; justify-content:space-between; gap:1.2rem; padding:.6rem 0; border-bottom:1px dashed var(--hair); font-size:1rem; }
+  .life li .p { color:var(--sage); text-align:right; font-family:var(--mono); font-size:.82rem; }
+  .life-target { margin-top:1.4rem; font-family:var(--serif); font-style:italic; font-size:1.5rem; color:var(--sage); }
+
+  /* closing */
+  .close-meta { margin-top:2.4rem; font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); line-height:2; }
+  .dossier-h { font-family:var(--serif); font-weight:360; font-size:clamp(2.1rem,4.6vw,3.2rem); line-height:1.04; margin-bottom:.8rem; color:var(--ink); }
+  .closing { background:transparent; color:var(--ink); min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:clamp(1.8rem,4vh,3rem); padding:clamp(72px,12vh,150px) 6vw; }
+  .closing-fig { margin:0; width:min(440px,72vw); }
+  .closing-fig img { display:block; width:100%; height:auto; border-radius:3px; box-shadow:0 24px 54px -30px rgba(31,27,22,.4); cursor:zoom-in; }
+  .closing-quote { font-family:var(--serif); font-style:italic; font-weight:300; font-size:clamp(1.7rem,4vw,3rem); line-height:1.3; color:var(--ink); max-width:28ch; }
+  .closing-meta { font-family:var(--mono); font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); max-width:62ch; line-height:2; }
+
+  /* reveal + safety */
+  .r { opacity:0; }
+  html:not(.js) .r { opacity:1 !important; transform:none !important; }
+  @media (prefers-reduced-motion:reduce){ .r { opacity:1 !important; transform:none !important; } .pbg, .coverimg { transform:none !important; } }
+
+  /* lightbox */
+  .lb { position:fixed; inset:0; background:rgba(12,9,6,.96); display:none; z-index:400; align-items:center; justify-content:center; cursor:zoom-out; }
+  .lb.open { display:flex; }
+  .lb img { max-width:92vw; max-height:88vh; border-radius:3px; box-shadow:0 24px 70px rgba(0,0,0,.6); }
+  .lb video { max-width:92vw; max-height:88vh; border-radius:3px; box-shadow:0 24px 70px rgba(0,0,0,.6); background:#000; }
+  /* wayfinding rail */
+  .wayfinder { position:fixed; right:max(14px,1.4vw); top:50%; transform:translateY(-50%); z-index:210; display:flex; flex-direction:column; gap:.72rem; align-items:flex-end; }
+  @media (max-width:900px){ .wayfinder { display:none; } }
+  .wf-dot { position:relative; width:9px; height:9px; border-radius:999px; border:0; background:rgba(160,150,138,.55); cursor:pointer; padding:0; transition:transform .35s cubic-bezier(.4,0,.2,1), background .35s ease; }
+  .wf-dot:hover { background:var(--ember); }
+  .wf-dot.active { background:var(--ember); transform:scale(1.6); }
+  .wf-label { position:absolute; right:18px; top:50%; transform:translateY(-50%); white-space:nowrap; background:var(--ink); color:#f4f1ea; font-family:var(--mono); font-size:9.5px; letter-spacing:.06em; text-transform:uppercase; padding:.3rem .6rem; border-radius:4px; opacity:0; pointer-events:none; transition:opacity .2s ease; box-shadow:0 4px 16px rgba(0,0,0,.25); }
+  .wf-dot:hover .wf-label { opacity:1; }
+  .lb .x { position:fixed; top:14px; right:22px; background:none; border:0; color:#f4f1ea; font-size:2.2rem; cursor:pointer; opacity:.75; font-family:var(--body); }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="rhead"><span>Cura</span><span class="mid" id="scene">Carriageworks · 2026</span></div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="pbg" data-parallax style="background-image:url('images/hero.webp')"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-in">
+    <div class="hero-eye r" data-reveal>Sydney Festival · Carriageworks, Eveleigh</div>
+    <h1 class="r" data-reveal>Cura</h1>
+    <p class="hero-sub r" data-reveal>A slow-fashion pop-up built on a single word, care.</p>
+  </div>
+  <div class="scrollcue">Scroll</div>
+</header>
+
+<!-- INTRO -->
+<section class="pad center" data-scene="Introduction" style="max-width:900px;">
+  <p class="big r" data-reveal>Everything about Cura returns to one word, <em style="color:var(--accent);">care</em>. For the materials, the craft behind them, and the environment that yields them.</p>
+  <p class="lead-dk r" data-reveal style="max-width:840px;margin:2rem auto 0;">A retail edit and a hands-on making studio, side by side, inside Carriageworks for Sydney Festival. Slow down, touch and notice natural materials, and leave with something you made yourself. Arrive a browser, leave a maker.</p>
+</section>
+
+<!-- SITE -->
+<section class="shot bottom" data-scene="The site">
+  <div class="pbg" data-parallax style="background-image:url('images/venue-interior.png')"></div>
+  <div class="shot-grad" style="background:linear-gradient(180deg,rgba(244,241,234,.28),rgba(244,241,234,.9));"></div>
+  <div class="shot-in shot-cap">
+    <div class="klabel r" data-reveal>The site</div>
+    <h2 class="r" data-reveal>A 19th-century brick rail workshop.</h2>
+    <p class="r" data-reveal>Exposed brick, repeating iron-framed gabled bays, raw industrial volume. That rawness set an earthy, grounded material direction, and the inner-city, values-driven Festival crowd made slow fashion the natural fit.</p>
+  </div>
+</section>
+
+<!-- INFLUENCES -->
+<section class="pad" data-scene="Influences">
+  <div class="center r" data-reveal style="margin-bottom:clamp(36px,6vh,64px);">
+    <div class="klabel">Two artists shaped it</div>
+    <p class="lead-dk">Janet Laurence gave the <em style="color:var(--accent);">why</em>: glass, botanicals and veils, nature as care. Kengo Kuma gave the <em style="color:var(--accent);">how</em>: layered bamboo and soft, filtered light.</p>
+  </div>
+  <div class="imgrid r" data-reveal>
+    <figure class="icard"><img data-plate src="images/janet-laurence.webp" alt="Janet Laurence glass botanical panels"><figcaption>Janet Laurence, the why</figcaption></figure>
+    <figure class="icard"><img data-plate src="images/kengo-kuma.png" alt="Kengo Kuma layered bamboo"><figcaption>Kengo Kuma, the how</figcaption></figure>
+  </div>
+  <div class="meta3 r" data-reveal>
+    <div><div class="mt">The name</div><p>Cura, Latin for <em>care</em>.</p></div>
+    <div><div class="mt">The customer</div><p>Slow-fashion, conscious-living; largely female, 25 to 45, inner-city, tactile.</p></div>
+    <div><div class="mt">The response</div><p>Curved 80 m&sup2; plan: two zones, two entries, four senses, zero landfill.</p></div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="pad" data-scene="By the numbers" style="position:relative;overflow:hidden;">
+  <div class="pbg" data-parallax style="background-image:url('images/texture-sandstone.jpg');opacity:.5;"></div>
+  <div class="shot-grad" style="background:transparent;"></div>
+  <div class="num-row r" data-reveal data-stagger>
+    <div class="num"><div class="v"><span data-count="80"></span><span class="u">m&sup2;</span></div><div class="l">Footprint</div></div>
+    <div class="num"><div class="v"><span data-count="2"></span></div><div class="l">Zones</div></div>
+    <div class="num"><div class="v"><span data-count="4"></span></div><div class="l">Senses</div></div>
+    <div class="num"><div class="v"><span data-count="15"></span></div><div class="l">Schedule items</div></div>
+    <div class="num"><div class="v"><span data-count="0"></span></div><div class="l">To landfill</div></div>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section class="pad" data-scene="Concept">
+  <div class="center r" data-reveal style="margin-bottom:clamp(28px,4.5vh,52px);">
+    <div class="klabel">Concept board</div>
+    <h2 style="font-family:var(--serif);font-weight:330;font-size:clamp(1.9rem,4.4vw,3rem);color:var(--ink);margin-bottom:1rem;">Textures of care.</h2>
+    <p class="lead-dk">The board pulls from the natural world, earth, botanicals, craft and light, chosen to carry the <em style="color:var(--accent);">feeling</em> of care more than the literal fact of it.</p>
+  </div>
+  <figure class="r" data-reveal style="max-width:1100px;margin:0 auto;background:#fbf9f4;border:1px solid var(--hair);border-radius:3px;padding:12px;box-shadow:0 20px 48px -30px rgba(31,27,22,.34);">
+    <img data-plate src="images/concept-board.png" alt="Concept board of textures of care" style="display:block;width:100%;height:auto;cursor:zoom-in;border-radius:2px;">
+    <figcaption style="margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8a8178;">Textures of care: raw linen, water, glazed clay, leaf vein, pressed botanicals, rammed earth and filtered light</figcaption>
+  </figure>
+</section>
+
+<!-- PULL QUOTE 1 -->
+<section class="qband">
+  <img class="coverimg" data-parallax src="images/image.jpeg" alt="">
+  <div class="shot-grad" style="background:transparent;"></div>
+  <p class="quote r" data-reveal style="max-width:30ch;">Slow down, and reconnect with the material world.</p>
+</section>
+
+<!-- TWO ZONES -->
+<section class="pad" data-scene="Two zones">
+  <div class="center r" data-reveal style="margin-bottom:clamp(32px,5vh,56px);">
+    <div class="klabel">Two interlocking zones</div>
+    <h2 style="font-family:var(--serif);font-weight:330;font-size:clamp(1.9rem,4.4vw,3rem);color:var(--ink);">One journey, browse to make.</h2>
+  </div>
+  <div class="zgrid">
+    <div class="zcard r" data-reveal>
+      <img data-plate src="images/mood-board.png" alt="The space">
+      <div class="g"></div>
+      <div class="tx"><div class="z" style="color:var(--accent);">Zone 01 · Retail edit, outer ring</div><p>Garments, textiles and lifestyle pieces. Curved rails, a travertine-look bench, recycled-timber shelves, cream limewash walls, sheer linen drapes, backlit herbarium panels and a change room.</p></div>
+    </div>
+    <div class="zcard r" data-reveal>
+      <img data-plate src="images/offering.png" alt="The offering">
+      <div class="g"></div>
+      <div class="tx"><div class="z" style="color:var(--sage);">Zone 02 · Personalisation studio, inner</div><p>Hands-on. Customise raw linen with botanical printing and natural dyes, then take it home. A cashier counter, a rammed-earth bar with FSC spotted-gum top, raw stools, glazed botanical displays.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SENSES (cream cards over botanical background) -->
+<section class="senses" data-scene="The senses">
+  <div class="senses-bg" aria-hidden="true"></div>
+  <div class="senses-veil" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="r" data-reveal><div class="dlabel">The sensory layer</div><h2>Four senses engaged</h2><p class="sub">One more than the brief asked for.</p></div>
+    <div class="sgrid r" data-reveal data-stagger>
+      <div class="sense" style="--c:#b9764f"><div class="sn">S · 01</div><h4>Sight</h4><p>Warm rammed-earth tones and sandy ochre; light through the bamboo screens and linen drapes; the dried botanical canopy overhead; backlit herbarium panels and glazed botanical displays.</p></div>
+      <div class="sense" style="--c:#a9603e"><div class="sn">S · 02</div><h4>Touch</h4><p>Rammed-earth walls, the FSC spotted-gum bench top, raw-linen garments and the travertine-look plinth, surfaces you want to run a hand over.</p></div>
+      <div class="sense" style="--c:#7c8268"><div class="sn">S · 03</div><h4>Smell</h4><p>Raw earth and clay, the natural dyes working during the workshop, dried botanicals, and FSC timber.</p></div>
+      <div class="sense" style="--c:#6d8591"><div class="sn">S · 04</div><h4>Sound</h4><p>Quiet, nature-layered background music carried softly across both zones.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PLAN (dark) -->
+<section class="pad plan" data-scene="The plan">
+  <div class="center r" data-reveal style="margin-bottom:clamp(32px,5vh,52px);">
+    <div class="klabel">The plan</div>
+    <h2 style="font-family:var(--serif);font-weight:330;font-size:clamp(1.9rem,4.4vw,3rem);color:var(--ink);margin-bottom:1rem;">An organic curve, two zones interlocked.</h2>
+    <p class="lead-dk">80 m&sup2;, a soft boundary, entry from either side. Retail edit as the outer ring, the studio at the heart. The existing polished concrete stays.</p>
+  </div>
+  <div class="r" data-reveal style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(14px,2vw,24px);max-width:1100px;margin:0 auto;align-items:center;">
+    <figure style="background:#efe9dd;"><img data-plate src="images/plan-autocad.png" alt="Labelled plan" style="display:block;width:100%;height:auto;cursor:zoom-in;"></figure>
+    <figure style="background:#cfc8bb;"><img data-plate src="images/plan-rendered.png" alt="Rendered plan" style="display:block;width:100%;height:auto;cursor:zoom-in;"></figure>
+  </div>
+</section>
+
+<!-- DOSSIER (cream) -->
+<section class="dossier"><div class="inner">
+
+  <div class="dblock r" data-reveal id="views" data-scene="Elevations and perspectives">
+    <div class="dlabel">Elevations and perspectives</div>
+    <h3>The space, rendered and in section.</h3>
+    <p class="lead">The customer journey, end to end: arrive, browse the edit, slip through the batten screen, personalise a linen piece, and head off with it.</p>
+
+    <p class="subl">Perspectives</p>
+    <figure class="dplate r" data-reveal><img data-plate src="images/perspective-1.png" alt="Interior perspective of the retail edit"><figcaption class="dcap">Inside the retail edit: garment rails, the glazed botanical cylinder and the bamboo screens</figcaption></figure>
+    <div class="g2 r" data-reveal style="margin-top:14px;">
+      <figure class="dplate"><img data-plate src="images/perspective-2.png" alt="Perspective of the glazed botanical cylinder"><figcaption class="dcap">The glazed botanical cylinder and the curved bamboo boundary</figcaption></figure>
+      <figure class="dplate"><img data-plate src="images/perspective-3.png" alt="Perspective of the personalisation counter"><figcaption class="dcap">The personalisation counter, with botanicals overhead</figcaption></figure>
+    </div>
+
+    <p class="subl">Elevations</p>
+    <div class="g2 r" data-reveal data-stagger>
+      <figure class="dplate"><img data-plate src="images/elevation-1.png" alt="Front elevation of the insertion under the gabled trusses"><figcaption class="dcap">The whole insertion under the gabled iron trusses</figcaption></figure>
+      <figure class="dplate"><img data-plate src="images/elevation-2.png" alt="Elevation of the bamboo screen beside the curved limewash volume"><figcaption class="dcap">The bamboo screen and the curved limewash volume, side by side</figcaption></figure>
+      <figure class="dplate"><img data-plate src="images/elevation-3.png" alt="Elevation read through the heritage brick arches"><figcaption class="dcap">Read through the heritage brick arches of the bay</figcaption></figure>
+      <figure class="dplate"><img data-plate src="images/elevation-4.png" alt="Close elevation of the glazed botanical window and batten screen"><figcaption class="dcap">Close on the glazed botanical window and the batten screen</figcaption></figure>
+    </div>
+
+    <p class="subl">Atmosphere</p>
+    <div class="g2 r" data-reveal>
+      <figure class="dplate vplate"><video data-video src="clips/retail-front.mp4" muted loop autoplay playsinline preload="metadata"></video><figcaption class="dcap">Retail front: the glazed botanical screens, columns and linen rails. Click to play</figcaption></figure>
+      <figure class="dplate vplate"><video data-video src="clips/retail-bar.mp4" muted loop autoplay playsinline preload="metadata"></video><figcaption class="dcap">The personalisation bar, rammed earth up close. Click to play</figcaption></figure>
+    </div>
+
+    <p class="subl">Sample board</p>
+    <figure class="dplate r" data-reveal style="margin:0;">
+      <img data-plate src="images/sample-board.png" alt="CURA sample board, material swatches in proportion to their use">
+      <figcaption class="dcap">Swatches sized to how much each material is used in the space. Click the board to enlarge.</figcaption>
+    </figure>
+    <details class="sbkey r" data-reveal>
+      <summary>Show the coded key and product names</summary>
+      <div class="sbkey-body">
+        <figure class="dplate" style="margin:0;"><img data-plate src="images/sample-board-keyed.png" alt="Sample board with each swatch numbered and named, keyed to the FF&amp;E schedule"><figcaption class="dcap">Each swatch numbered and named, keyed to the FF&amp;E schedule. Click to enlarge.</figcaption></figure>
+      </div>
+    </details>
+
+  </div>
+
+  <div class="dblock r" data-reveal id="schedule" data-scene="Schedule of FF and E" style="border-top:1.5px solid var(--ink);padding-top:1.6rem;">
+    <h3 class="dossier-h">Schedule of finishes, furniture and fixtures</h3>
+    <p class="lead">The full FF&amp;E board: fifteen line items, each with its supplier, cost, a product photo and sustainability notes.</p>
+<div class="ffe-wrap">
+<table class="ffe"><thead><tr><th>Code</th><th>Item &amp; description</th><th>Application</th><th>Supplier</th><th>Cost</th><th>Photo</th><th>Sustainability notes</th></tr></thead><tbody>
+<tr class="grp"><td colspan="7">FINISHES and FIXED ELEMENTS</td></tr>
+<tr class="feat"><td class="c-code"><b>RC-LW15</b></td><td>Rockcote Lime Wash Mineral lime wash. Tint: &#x27;Warm Limestone&#x27;, natural yellow-ochre oxide at light dosage (warm neutral). <span class="pill">featured</span></td><td>Walls, retail space</td><td><a href="http://rockcote.com.au/product/lime-wash" target="_blank" rel="noopener">Rockcote</a></td><td class="c-cost">~$85 / 15L pail</td><td class="c-photo"><img data-plate src="images/ffe/row5.png" alt="RC-LW15"></td><td class="c-notes">Natural mineral product. Zero VOCs. Breathable, regulates moisture in wall. Biodegradable. No synthetic binders. Recyclable packaging (cardboard pail). End of life: plaster returned to earth.</td></tr>
+<tr><td class="c-code"><b>FIN04ANGO</b></td><td>Warwick Inari Sheer, Angora</td><td>Curtains in front of timber battens, retail zone</td><td><a href="https://warwick.com.au" target="_blank" rel="noopener">Warwick Fabrics</a></td><td class="c-cost">POA (trade)</td><td class="c-photo"><img data-plate src="images/ffe/row6.png" alt="FIN04ANGO"></td><td class="c-notes">70% linen / 30% wool. Both natural fibres, linen is one of the lowest water-use crops; wool is renewable and biodegradable. FR-rated without chemical treatment. Donated to textile recycler at end of festival.</td></tr>
+<tr><td class="c-code"><b>WAR-BO</b></td><td>Warwick Blockout curtain fabric Blockout range</td><td>Curtains, change rooms</td><td><a href="http://warwick.com.au/" target="_blank" rel="noopener">Warwick Fabrics</a></td><td class="c-cost">POA (trade)</td><td class="c-photo"><img data-plate src="images/ffe/row7.png" alt="WAR-BO"></td><td class="c-notes">Blockout linen-look. Same natural fibre blend as Inari sheer. Donated post-festival. Avoids synthetic blackout coatings where possible, confirm with Warwick at order stage.</td></tr>
+<tr class="feat"><td class="c-code"><b>ET-SG</b></td><td>Spotted Gum 180mm Timber <span class="pill">featured</span></td><td>Benchtop over rammed earth counter</td><td><a href="http://safetycivil.com.au/" target="_blank" rel="noopener">Safety &amp; Civil Supply Co.</a></td><td class="c-cost">$78.57 / m&sup2; ex GST</td><td class="c-photo"><img data-plate src="images/ffe/row8.png" alt="ET-SG"></td><td class="c-notes">Engineered timber uses less old-growth timber than solid hardwood. Spotted gum is a fast-growing Australian native. FSC certification recommended, confirm at order. Offcuts repurposed (items 5 and 6). Can be salvaged and resold post-festival.</td></tr>
+<tr><td class="c-code"><b>ET-SG</b></td><td>Spotted Gum 180mm Timber (offcuts) Same product as above, fabricated from offcuts</td><td>Custom shelves outside change room</td><td><a href="http://safetycivil.com.au/" target="_blank" rel="noopener">Safety &amp; Civil Supply Co.</a></td><td class="c-cost">From offcuts, nil/minimal extra</td><td class="c-photo"><img data-plate src="images/ffe/row9.png" alt="ET-SG"></td><td class="c-notes">Offcuts, zero additional material waste. Circular use of resource. No new timber required.</td></tr>
+<tr><td class="c-code"><b>ET-SG</b></td><td>Spotted Gum 180mm Timber Same product as above, run as large battens</td><td>Large battens behind sheer curtains</td><td><a href="http://safetycivil.com.au/" target="_blank" rel="noopener">Safety &amp; Civil Supply Co.</a></td><td class="c-cost">$78.57 / m&sup2; ex GST</td><td class="c-photo"><img data-plate src="images/ffe/row10.png" alt="ET-SG"></td><td class="c-notes">Engineered timber uses less old-growth timber than solid hardwood. Spotted gum is a fast-growing Australian native. FSC certification recommended, confirm at order. Offcuts repurposed (items 5 and 6). Can be salvaged and resold post-festival.</td></tr>
+<tr class="grp"><td colspan="7">FURNITURE and FIXTURES</td></tr>
+<tr class="feat"><td class="c-code"><b>REC-CB01</b></td><td>Rammed Earth Counter Base <span class="pill">featured</span></td><td>Counter base (supports spotted gum benchtop)</td><td><a href="https://rammedearth.com.au/" target="_blank" rel="noopener">Rammed Earth Constructions</a></td><td class="c-cost">POA (custom)</td><td class="c-photo"><img data-plate src="images/ffe/row12.png" alt="REC-CB01"></td><td class="c-notes">Rammed earth is one of the most sustainable building materials available. Raw subsoil only, no cement required for temporary installation. 100% returned to earth post-festival. Zero embodied carbon disposal.</td></tr>
+<tr><td class="c-code"><b>HH-URB-AB</b></td><td>Hepburn Hardware Utility Rail End Brackets Solid brass, antique bronze</td><td>Curtain rail + garment/clothing racks (coathanger rail)</td><td><a href="http://hepburnhardware.com/" target="_blank" rel="noopener">Hepburn Hardware</a></td><td class="c-cost">$124.00 per bracket</td><td class="c-photo"><img data-plate src="images/ffe/row13.png" alt="HH-URB-AB"></td><td class="c-notes">Solid brass, highly durable, recyclable at end of life. Antique bronze finish is a patina process, not a coating, so no toxic stripping required. Long lifespan reduces replacement frequency.</td></tr>
+<tr><td class="c-code"><b>56014RVN0073086</b></td><td>Adairs Nora Travertine Table set</td><td>Display tables between garment racks</td><td><a href="http://adairs.com.au/" target="_blank" rel="noopener">Adairs</a></td><td class="c-cost">$499.99 / set of 2</td><td class="c-photo"><img data-plate src="images/ffe/row14.png" alt="56014RVN0073086"></td><td class="c-notes">Faux travertine (MDF + laminate). Lower sustainability credentials than natural stone but lighter and reusable. Can be resold or donated post-festival via Adairs takeback or marketplace.</td></tr>
+<tr><td class="c-code"><b>HUN-BANJO-OAK</b></td><td>Huntley &amp; Co Banjo Bar Stool Oak (x3, HIRE)</td><td>Personalisation bar seating</td><td><a href="http://huntleyandco.com.au/" target="_blank" rel="noopener">Huntley + Co</a></td><td class="c-cost">POA (hire), qty 3</td><td class="c-photo"><img data-plate src="images/ffe/row15.png" alt="HUN-BANJO-OAK"></td><td class="c-notes">Hire item, no ownership, no disposal. Lowest embodied carbon option for furniture. Oak is a renewable hardwood. Returned to Huntley + Co after festival.</td></tr>
+<tr><td class="c-code"><b>BW-01</b></td><td>Dried Flower / Pressed Botanical Wall Custom feature wall</td><td>Feature wall</td><td><a href="http://grandiflora.com.au/" target="_blank" rel="noopener">Grandiflora</a></td><td class="c-cost">POA (custom)</td><td class="c-photo"><img data-plate src="images/ffe/row16.png" alt="BW-01"></td><td class="c-notes">Dried botanical specimens sourced locally (eucalyptus, grasses, seed pods). Compostable at end of festival. Jute twine is biodegradable. Zero synthetic materials.</td></tr>
+<tr class="grp"><td colspan="7">LIGHTING (all 2700K warm white LED, daytime operation)</td></tr>
+<tr><td class="c-code"><b>DOM-FINO-27</b></td><td>LED Strip Behind Botanical Panels, 2700K Domus Lighting FINO</td><td>Decorative, backlit panels</td><td><a href="https://domuslighting.com.au" target="_blank" rel="noopener">Domus Lighting</a></td><td class="c-cost">POA</td><td class="c-photo"></td><td class="c-notes">LED strip, energy efficient, long lifespan (50,000+ hrs). Reused post-festival. No mercury (unlike fluorescent). Low heat output.</td></tr>
+<tr><td class="c-code"><b>BG-D900-27</b></td><td>Concealed LED in Ceiling Batten, 2700K Brightgreen</td><td>Decorative, ceiling</td><td><a href="https://brightgreen.com" target="_blank" rel="noopener">Brightgreen</a></td><td class="c-cost">POA</td><td class="c-photo"></td><td class="c-notes">LED strip, energy efficient, long lifespan (50,000+ hrs). Reused post-festival. No mercury (unlike fluorescent). Low heat output.</td></tr>
+<tr><td class="c-code"><b>INL-UW-27</b></td><td>Narrow Wash Uplighters, 2700K Inlite</td><td>Accent, timber battens</td><td><a href="https://inlite.com.au" target="_blank" rel="noopener">Inlite</a></td><td class="c-cost">POA</td><td class="c-photo"></td><td class="c-notes">LED strip, energy efficient, long lifespan (50,000+ hrs). Reused post-festival. No mercury (unlike fluorescent). Low heat output.</td></tr>
+<tr><td class="c-code"><b>DOM-LS-27</b></td><td>Recessed LED Strip Under Counter, 2700K Domus Lighting</td><td>Accent, counter lip</td><td><a href="https://domuslighting.com.au" target="_blank" rel="noopener">Domus Lighting</a></td><td class="c-cost">POA</td><td class="c-photo"></td><td class="c-notes">LED strip, energy efficient, long lifespan (50,000+ hrs). Reused post-festival. No mercury (unlike fluorescent). Low heat output.</td></tr>
+</tbody></table></div>
+    <p style="margin-top:.8rem;font-size:.88rem;color:var(--muted);">Costs indicative. POA means price on application. The existing concrete floor is retained, so no new material and no cost.</p>
+  </div>
+
+  <div class="dblock r" data-reveal id="materials" data-scene="Three materials" style="border-top:1.5px solid var(--ink);padding-top:1.6rem;">
+    <h3 class="dossier-h">Three materials, followed cradle to grave</h3>
+    <p class="lead">The three finishes carrying the strongest sustainability story, researched from what they actually are through to where they end up. Sources are linked so the claims hold up.</p>
+    <div id="materials-list"></div>
+  </div>
+
+  <div class="dblock r" data-reveal id="lifecycle" data-scene="When the pop-up comes down" style="border-top:1.5px solid var(--ink);padding-top:1.6rem;">
+    <div class="dlabel">When the pop-up comes down</div>
+    <p class="lead">Every part of the build has somewhere to go after three weeks. Nothing is made just to be binned.</p>
+    <ul class="life" id="life" data-stagger></ul>
+    <p class="life-target">Target: zero landfill.</p>
+  </div>
+
+  <div class="r" data-reveal id="eval" data-scene="Self-evaluation" style="border-top:1.5px solid var(--ink);padding-top:1.6rem;">
+    <div class="dlabel">Self-evaluation</div>
+    <div class="placeholder" style="max-width:70ch;">
+      <div class="pt">To come, after educator feedback</div>
+      <p style="font-size:1rem;color:#3a342c;margin-bottom:.5rem;">Four questions to answer:</p>
+      <ul>
+        <li>What was successful about the design?</li>
+        <li>What changes would better communicate the concept?</li>
+        <li>What were the challenges in translating concept into space?</li>
+        <li>How would I improve my concept-development process?</li>
+      </ul>
+    </div>
+  </div>
+
+</div></section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <figure class="closing-fig r" data-reveal><img data-plate src="images/image1.jpeg" alt="Pressed botanical specimen"></figure>
+  <p class="closing-quote r" data-reveal>Care for materials, for craft, and for the natural world.</p>
+  <div class="closing-meta r" data-reveal>Cura · Sydney Festival pop-up at Carriageworks · Liv Sanchez Interiors · SDS 0902 · 2026</div>
+</section>
+
+<div class="lb" id="lb"><img id="lb-img" alt=""><video id="lb-video" controls playsinline></video><button class="x" id="lb-x" type="button" aria-label="Close">&times;</button></div>
+
+<script>
+(function () {
+  document.documentElement.classList.add('js');
+  function revealAll(){ try { document.querySelectorAll('.r').forEach(function(n){ n.style.opacity='1'; n.style.transform='none'; }); } catch(e){} }
+  try {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* schedule */
+  var sched = [
+    ['grp','Finishes and fixed elements'],
+    ['1.0','Rockcote Lime Wash, tint Warm Limestone',1,'Walls, retail space','Rockcote','~$85 / 15L pail'],
+    ['2.0','Warwick Inari Sheer, Angora',0,'Curtains in front of the battens, retail','Warwick Fabrics','POA (trade)'],
+    ['3.0','Warwick Blockout Curtain',0,'Curtains, change rooms','Warwick Fabrics','POA (trade)'],
+    ['4.0','Spotted Gum 180mm Engineered Timber',1,'Benchtop over the rammed earth counter','Safety &amp; Civil Supply Co.','$78.57 / m&sup2; ex GST'],
+    ['5.0','Spotted Gum Timber, from offcuts',0,'Custom shelves outside the change room','Safety &amp; Civil Supply Co.','From offcuts, nil to minimal'],
+    ['6.0','Spotted Gum Timber, run as battens',0,'Large battens behind the sheer curtains','Safety &amp; Civil Supply Co.','$78.57 / m&sup2; ex GST'],
+    ['grp','Furniture and fixtures'],
+    ['7.0','Rammed Earth Counter Base',1,'Counter base under the spotted gum top','Rammed Earth Constructions','POA (custom)'],
+    ['8.0','Hepburn Hardware Rail End Brackets, brass',0,'Curtain rail and garment rails','Hepburn Hardware','$124.00 / bracket'],
+    ['9.0','Adairs Nora Travertine-Look Table Set',0,'Display tables between garment rails','Adairs','$499.99 / set of 2'],
+    ['10.0','Huntley &amp; Co Banjo Bar Stool, oak (hire x3)',0,'Personalisation bar seating','Huntley &amp; Co','POA (hire), qty 3'],
+    ['BW-01','Dried Flower and Pressed Botanical Wall',0,'Feature wall','Grandiflora','POA (custom)'],
+    ['grp','Lighting, all 2700K warm white LED'],
+    ['DOM-FINO-27','LED Strip behind Botanical Panels',0,'Decorative, backlit panels','Domus Lighting','POA'],
+    ['BG-D900-27','Concealed LED in Ceiling Batten',0,'Decorative, ceiling','Brightgreen','POA'],
+    ['INL-UW-27','Narrow Wash Uplighters',0,'Accent, timber battens','Inlite','POA'],
+    ['DOM-LS-27','Recessed LED Strip under Counter',0,'Accent, counter lip','Domus Lighting','POA']
+  ];
+  var sb = document.getElementById('sched');
+  if (sb) sb.innerHTML = sched.map(function(r){
+    if (r[0]==='grp') return '<tr><td colspan="5" style="padding:.7rem 1rem;background:#efe9dd;font-family:var(--mono);font-weight:700;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#1f1b16;border-bottom:1px solid #e3ddd1;">'+r[1]+'</td></tr>';
+    var feat = r[2] ? ' <span class="pill">featured</span>' : '';
+    var bg = r[2] ? 'background:#f6efe4;' : '';
+    return '<tr style="'+bg+'"><td class="code">'+r[0]+'</td><td>'+r[1]+feat+'</td><td style="color:#5a5249;">'+r[3]+'</td><td style="color:#5a5249;">'+r[4]+'</td><td style="white-space:nowrap;">'+r[5]+'</td></tr>';
+  }).join('');
+
+  /* materials */
+  function src(label,url){ return ' <a href="'+url+'" target="_blank" rel="noopener" class="src">'+label+'</a>'; }
+  var mats = [
+    ['Rockcote Lime Wash','Walls, retail space','#9a8f76',[
+      ['What it is','Natural mineral limewash on the retail walls, tinted \'Warm Limestone\' with a light dose of yellow-ochre oxide for a warm neutral. Solvent-free and low-VOC.'],
+      ['Why it is sustainable','A natural mineral product with very low embodied energy: zero VOCs and no synthetic binders. It breathes, so it regulates moisture in the wall, and it runs on a carbon cycle, reabsorbing CO2 from the air as it cures.'+src('Source: BioLime','https://biolime.com/lime-vs-cement/')],
+      ['How it is made','Naturally occurring limestone is burnt to a lime putty, tinted with natural mineral oxides and mixed with water. No synthetic additives. On the wall it slowly turns back toward limestone as it hardens.'],
+      ['Lifespan','A breathable finish with self-healing micro-cracks that develops character over time. Recoating is just another thin lime layer, not a strip-back, which suits a pop-up.'],
+      ['Packaging','Delivered in recyclable cardboard pails.'],
+      ['End of life','Fully biodegradable. The plaster is returned to earth after the festival.']
+    ]],
+    ['Rammed Earth Counter Base','Personalisation studio','#a9603e',[
+      ['What it is','A custom rammed earth counter base in ochre and terracotta tones, supporting the spotted gum benchtop in the personalisation studio.'],
+      ['Why it is sustainable','One of the most sustainable building materials available: raw subsoil only, with no cement needed for a temporary installation, so embodied carbon at disposal is effectively zero. Earth construction can cut environmental impact by around 50% versus conventional walls.'+src('Source: ScienceDirect','https://www.sciencedirect.com/science/article/abs/pii/S0378778809002436')],
+      ['How it is made','Raw earth and subsoil are compacted in layers within formwork under pressure. No firing, no chemical treatment, no synthetic additives.'],
+      ['Lifespan','Extremely durable with real thermal mass, and it improves with age. Best for a solid mass element like the counter base.'],
+      ['Packaging','Effectively none. Mixed and built up on site, then transported to the pop-up.'],
+      ['End of life','100% returned to earth after the festival. Zero waste, zero landfill.']
+    ]],
+    ['Spotted Gum Engineered Timber','Benchtop, battens, shelves','#b9764f',[
+      ['What it is','Spotted gum 180mm engineered timber as the benchtop over the rammed earth counter, with offcuts repurposed as custom shelves and large battens. One product, three uses.'],
+      ['Why it is sustainable','Engineered timber uses significantly less old-growth timber than solid hardwood, and spotted gum is a fast-growing Australian native, so transport is short and the timber stores carbon. FSC certification recommended, confirm at order stage.'+src('Source: Wood and Beyond','https://www.woodandbeyond.com/blog/engineered-wood-flooring-installation-2025-guide/')],
+      ['How it is made','Timber is harvested and milled into engineered boards with a click or tongue-and-groove system, which maximises yield and minimises waste.'],
+      ['Lifespan','Commercial grade, durable and long-lasting, and the surface can be sanded back and refinished. Offcuts are fully used across the three applications, so there is zero waste from this material.'+src('Source: Globalcarpets','https://www.globalcarpets.ca/blog/environmental-benefits-engineered-hardwood-flooring')],
+      ['Packaging','Delivered in standard 1800 to 2100mm lengths with minimal packaging.'],
+      ['End of life','Salvaged and resold after the festival. The offcuts are already fully repurposed within the project.']
+    ]]
+  ];
+  var ml = document.getElementById('materials-list');
+  if (ml) ml.innerHTML = mats.map(function(m,i){
+    var rows = m[3].map(function(f){
+      var dtc = (f[0]==='End of life') ? ' style="color:'+m[2]+';"' : '';
+      return '<div><div class="dt"'+dtc+'>'+f[0]+'</div><p>'+f[1]+'</p></div>';
+    }).join('');
+    return '<article class="mat"><div class="top"><span class="mn" style="color:'+m[2]+';">0'+(i+1)+'</span><h4>'+m[0]+'</h4><span class="sup">'+m[1]+'</span></div>'
+      +'<div class="body">'+rows+'</div></article>';
+  }).join('');
+
+  /* lifecycle */
+  var life = [
+    ['Lime wash plaster','Returned to earth, fully biodegradable'],['Rammed earth counter base','100% returned to earth, zero landfill'],
+    ['Spotted gum benchtop','Salvaged and resold'],['Spotted gum shelves and battens','Salvaged and resold, made from offcuts'],
+    ['Warwick sheer curtains','Donated to a textile recycler'],['Warwick blockout curtains','Donated to a textile recycler'],
+    ['Brass rail brackets','Recycled, solid brass, no toxic stripping'],['Travertine-look display tables','Resold or donated via Adairs marketplace'],
+    ['Oak bar stools','Returned to Huntley &amp; Co, hire items'],['Dried botanical feature wall','Composted, jute twine biodegradable'],
+    ['All LED lighting','Reused after the festival']
+  ];
+  var le = document.getElementById('life');
+  if (le) le.innerHTML = life.map(function(l){ return '<li><span>'+l[0]+'</span><span class="p">'+l[1]+'</span></li>'; }).join('');
+
+  /* reveal + stagger */
+  var reveals = document.querySelectorAll('[data-reveal]');
+  if (!reduce) reveals.forEach(function(el){ el.style.transform='translateY(28px)'; el.style.transition='opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1)'; });
+  function showStagger(el){ if (el.hasAttribute('data-stagger')) [].slice.call(el.children).forEach(function(c,i){ c.style.transition='opacity .8s ease, transform .8s ease'; c.style.transitionDelay=(i*80)+'ms'; c.style.transform='translateY(18px)'; requestAnimationFrame(function(){ requestAnimationFrame(function(){ c.style.opacity='1'; c.style.transform='none'; }); }); }); }
+  var io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; if(!reduce) showStagger(e.target); io.unobserve(e.target); } }); }, { threshold:0.04 });
+  reveals.forEach(function(el){ var r=el.getBoundingClientRect(); if (r.top<innerHeight && r.bottom>0){ el.style.opacity='1'; el.style.transform='none'; if(!reduce) showStagger(el); } else io.observe(el); });
+
+  /* count up */
+  document.querySelectorAll('[data-count]').forEach(function(el){
+    var to = parseInt(el.getAttribute('data-count'),10)||0; el.textContent='0';
+    if (reduce || to===0){ el.textContent=String(to); return; }
+    var seen=false;
+    var o=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !seen){ seen=true; var s=null; var step=function(ts){ if(!s)s=ts; var p=Math.min(1,(ts-s)/1200); el.textContent=String(Math.round((1-Math.pow(1-p,3))*to)); if(p<1) requestAnimationFrame(step); }; requestAnimationFrame(step); o.unobserve(e.target); } }); }, { threshold:0.5 });
+    o.observe(el);
+  });
+
+  /* progress + scene */
+  var bar=document.getElementById('progress'), sceneEl=document.getElementById('scene');
+  function onScroll(){ var d=document.documentElement; var max=(d.scrollHeight-d.clientHeight)||1; if(bar) bar.style.width=Math.min(1,Math.max(0,d.scrollTop/max))*100+'%'; }
+  window.addEventListener('scroll', onScroll, { passive:true }); onScroll();
+  var scenes=[].slice.call(document.querySelectorAll('[data-scene]'));
+  if (sceneEl && scenes.length){ var so=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) sceneEl.textContent=e.target.getAttribute('data-scene'); }); }, { rootMargin:'-45% 0px -45% 0px' }); scenes.forEach(function(s){ so.observe(s); }); }
+
+  /* wayfinding rail + keyboard section nav */
+  var navTargets=[].slice.call(document.querySelectorAll('header.hero, [data-scene]'));
+  if (navTargets.length){
+    var rail=document.createElement('nav'); rail.className='wayfinder'; rail.setAttribute('aria-label','Sections');
+    navTargets.forEach(function(sec,i){
+      if(!sec.id) sec.id='sec-'+i;
+      var label=sec.getAttribute('data-scene')||'Cura';
+      var dot=document.createElement('button'); dot.type='button'; dot.className='wf-dot'; dot.setAttribute('aria-label',label);
+      dot.innerHTML='<span class="wf-label"></span>'; dot.querySelector('.wf-label').textContent=label;
+      dot.addEventListener('click', function(){ sec.scrollIntoView({behavior:reduce?'auto':'smooth', block:'start'}); });
+      rail.appendChild(dot); sec._wf=dot;
+    });
+    document.body.appendChild(rail);
+    var curIdx=0;
+    var wfObs=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ navTargets.forEach(function(t){ t._wf.classList.remove('active'); }); e.target._wf.classList.add('active'); curIdx=navTargets.indexOf(e.target); } }); }, { rootMargin:'-45% 0px -45% 0px', threshold:0 });
+    navTargets.forEach(function(t){ wfObs.observe(t); });
+    function jump(d){ var n=Math.max(0,Math.min(navTargets.length-1,curIdx+d)); if(n!==curIdx){ navTargets[n].scrollIntoView({behavior:reduce?'auto':'smooth', block:'start'}); curIdx=n; } }
+    window.addEventListener('keydown', function(e){
+      var lbEl=document.getElementById('lb'); if(lbEl && lbEl.classList.contains('open')) return;
+      var tag=(e.target.tagName||'').toLowerCase(); if(tag==='input'||tag==='textarea') return;
+      if(e.key===' '){ e.preventDefault(); jump(e.shiftKey?-1:1); }
+    });
+  }
+
+  /* parallax */
+  var px=[].slice.call(document.querySelectorAll('[data-parallax]'));
+  var ticking=false;
+  function frame(){ var vh=innerHeight; px.forEach(function(el){ var p=el.parentElement; var r=p.getBoundingClientRect(); if(r.bottom<-100||r.top>vh+100) return; var d=((r.top+r.height/2)-vh/2)/vh; el.style.transform='translateY('+(d*-42).toFixed(1)+'px)'; }); ticking=false; }
+  function queue(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } }
+  if (!reduce){ window.addEventListener('scroll', queue, { passive:true }); window.addEventListener('resize', queue); frame(); }
+
+  /* lightbox */
+  var lb=document.getElementById('lb'), lbImg=document.getElementById('lb-img'), lbVideo=document.getElementById('lb-video');
+  function openImg(src){ lbVideo.pause(); lbVideo.style.display='none'; lbVideo.removeAttribute('src'); lbImg.src=src; lbImg.style.display=''; lb.classList.add('open'); document.body.style.overflow='hidden'; }
+  function openVid(src){ lbImg.style.display='none'; lbImg.removeAttribute('src'); lbVideo.src=src; lbVideo.style.display=''; lbVideo.currentTime=0; lbVideo.muted=false; lb.classList.add('open'); document.body.style.overflow='hidden'; lbVideo.play().catch(function(){}); }
+  function close(){ lb.classList.remove('open'); document.body.style.overflow=''; lbVideo.pause(); }
+  document.querySelectorAll('[data-plate]').forEach(function(img){ img.addEventListener('click', function(){ openImg(img.currentSrc||img.src); }); });
+  document.querySelectorAll('[data-video]').forEach(function(v){ v.addEventListener('click', function(){ openVid(v.currentSrc||v.getAttribute('src')); }); });
+  lb.addEventListener('click', function(e){ if(e.target===lb) close(); });
+  document.getElementById('lb-x').addEventListener('click', function(e){ e.stopPropagation(); close(); });
+  window.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+
+  } catch (err) { revealAll(); if (window.console && console.warn) console.warn('cura fx', err); }
+})();
+</script>
+</body>
+</html>
